@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAN Card Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            max-width: 400px;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">PAN Card Generator</h2>
+        <form id="panForm">
+            <div class="form-group">
+                <label for="userName">Name</label>
+                <input type="text" class="form-control" id="userName" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="userDOB">Date of Birth</label>
+                <input type="date" class="form-control" id="userDOB" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate PAN Card</button>
+        </form>
+
+        <div id="panCard" class="mt-5 d-none">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Permanent Account Number (PAN) Card</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Name: </strong><span id="panName"></span></p>
+                    <p class="card-text"><strong>PAN Number: </strong><span id="panNumber"></span></p>
+                    <p class="card-text"><strong>Date of Birth: </strong><span id="panDOB"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('panForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var userName = document.getElementById('userName').value;
+            var userDOB = document.getElementById('userDOB').value;
+            var firstLetter = userName.charAt(0).toUpperCase();
+            var panNumber = generatePanNumber(firstLetter);
+
+            document.getElementById('panName').innerText = userName;
+            document.getElementById('panNumber').innerText = panNumber;
+            document.getElementById('panDOB').innerText = userDOB;
+            document.getElementById('panCard').classList.remove('d-none');
+        });
+
+        function generatePanNumber(firstLetter) {
+            var randomChars = generateRandomChars(4);
+            var randomPart = Math.floor(1000 + Math.random() * 9000); // Generate a random 4-digit number
+            var lastChar = generateRandomChars(1); // Generate a random last character
+            var panNumber = randomChars + firstLetter + randomPart + lastChar;
+            return panNumber;
+        }
+
+        function generateRandomChars(length) {
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var result = '';
+            for (var i = 0; i < length; i++) {
+                var randomIndex = Math.floor(Math.random() * characters.length);
+                result += characters.charAt(randomIndex);
+            }
+            return result;
+        }
+    </script>
+</body>
+</html>
